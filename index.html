@@ -182,7 +182,7 @@
     <section id="design" data-background-color="#f6f7f6" aria-labelledby="design-heading">
       <div class="frame">
         <h2 id="design-heading">Control and treatment</h2>
-        <p class="lead">Each group ran five fresh sessions on each PR. For a given PR, all sessions used the same task brief and starting snapshot.</p>
+        <p class="lead">Each group ran five fresh sessions on each PR. For each PR, all sessions used the same task brief and started from the same pinned pre-fix commit.</p>
         <div class="groups">
           <div class="group">
             <p class="label muted">Control</p>
@@ -209,6 +209,40 @@
       <aside class="notes">
         <p>The complete treatment text and both overrides for each task are in the reproduction packet.</p>
         <p>We balanced assignments within each PR and used neutral checkout names. Preflight confirmed a regression on each pinned base, a pass on the merged fix, and at least one existing-behavior check that passed on both. The grader then ran in a separate workspace. Each session had a 420-second limit.</p>
+      </aside>
+    </section>
+
+    <section id="grading" data-background-color="#f6f7f6" aria-labelledby="grading-heading">
+      <div class="frame">
+        <h2 id="grading-heading">How we graded the patches</h2>
+        <div class="patches">
+          <div class="patch-row">
+            <h3>Validate the tests</h3>
+            <p>Before the runs, reproduce each bug on its pre-fix commit and confirm that the merged fix passes. Check that existing behavior passes on both commits.</p>
+          </div>
+          <div class="patch-row">
+            <h3>Grade the saved patch</h3>
+            <p>Apply the patch in a separate checkout. Run the tests kept out of the agent workspaces with <code>python -m pytest -q</code> on disposable PostgreSQL 17.</p>
+          </div>
+          <div class="patch-row">
+            <h3>Count a pass</h3>
+            <p>A patch passed if every expected test case ran and passed, including checks for behavior that should stay the same.</p>
+          </div>
+        </div>
+        <div class="grading-examples">
+          <div>
+            <p class="label muted">PR #20388 · Class lookup</p>
+            <p>School query counts in the model and GraphQL, plus teacher CSV export.</p>
+          </div>
+          <div>
+            <p class="label muted">PR #20462 · Chapter links</p>
+            <p>Query and savepoint counts across batch sizes, plus recovery from concurrent inserts.</p>
+          </div>
+        </div>
+      </div>
+      <aside class="notes">
+        <p>The coordinator selected regression tests from the merged fixes and added existing-behavior checks. Each task showed a regression on the pinned base. All selected cases passed on the merged fix, and the existing-behavior checks passed on both. The selected tests gave 28 expected pytest cases for #20388 and 7 for #20462.</p>
+        <p>The grader applied each saved patch to a clean copy of its starting commit, including the copies captured at the time limit. It then overlaid and hash-checked the grading files. Pytest ran the selected tests and produced JUnit results. A pass required a zero exit code, the exact expected case IDs, and a pass for every case. The archived grader also ran lint, formatting, and type checks as secondary measures.</p>
       </aside>
     </section>
 
@@ -302,40 +336,6 @@
       <aside class="notes">
         <p>Rule 3 has a concrete review example with a regression at two input sizes. The same PR provides an example of cache lifetime for Rule 4. The after-commit wording matches the Django ORM guide, which was present in both study snapshots. The source notes do not identify a particular PR behind that wording or behind Rule 6.</p>
         <p>PR #19445 is an example used to explain the draft. The two PRs used for testing were #20388 and #20462.</p>
-      </aside>
-    </section>
-
-    <section id="grading" data-background-color="#f6f7f6" aria-labelledby="grading-heading">
-      <div class="frame">
-        <h2 id="grading-heading">How we graded the patches</h2>
-        <div class="patches">
-          <div class="patch-row">
-            <h3>Validate the tests</h3>
-            <p>Before the runs, reproduce each bug on its pre-fix commit and confirm that the merged fix passes. Check that existing behavior passes on both commits.</p>
-          </div>
-          <div class="patch-row">
-            <h3>Grade the saved patch</h3>
-            <p>Apply the patch in a separate checkout. Run the tests kept out of the agent workspaces with <code>python -m pytest -q</code> on disposable PostgreSQL 17.</p>
-          </div>
-          <div class="patch-row">
-            <h3>Count a pass</h3>
-            <p>A patch passed if every expected test case ran and passed, including checks for behavior that should stay the same.</p>
-          </div>
-        </div>
-        <div class="grading-examples">
-          <div>
-            <p class="label muted">PR #20388 · Class lookup</p>
-            <p>School query counts in the model and GraphQL, plus teacher CSV export.</p>
-          </div>
-          <div>
-            <p class="label muted">PR #20462 · Chapter links</p>
-            <p>Query and savepoint counts across batch sizes, plus recovery from concurrent inserts.</p>
-          </div>
-        </div>
-      </div>
-      <aside class="notes">
-        <p>The coordinator selected regression tests from the merged fixes and added existing-behavior checks. Each task showed a regression on the pinned base. All selected cases passed on the merged fix, and the existing-behavior checks passed on both. The selected tests gave 28 expected pytest cases for #20388 and 7 for #20462.</p>
-        <p>The grader applied each saved patch to a clean copy of its starting commit, including the copies captured at the time limit. It then overlaid and hash-checked the grading files. Pytest ran the selected tests and produced JUnit results. A pass required a zero exit code, the exact expected case IDs, and a pass for every case. The archived grader also ran lint, formatting, and type checks as secondary measures.</p>
       </aside>
     </section>
 
