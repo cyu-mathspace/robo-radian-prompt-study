@@ -91,11 +91,8 @@
   .grading-examples { display: grid; grid-template-columns: 1fr 1fr; gap: 38px; margin-top: 25px; }
   .reveal .grading-examples p + p { margin-top: 6px; font-size: 22px; }
 
-  .replay-grid { display: grid; grid-template-columns: 1.27fr 1fr; gap: 55px; margin-top: 39px; }
-  .replay-list { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--dark-rule); }
+  .replay-list { max-width: 760px; margin: 39px 0 0; padding: 0; list-style: none; border-top: 1px solid var(--dark-rule); }
   .replay-list li { border-bottom: 1px solid var(--dark-rule); padding: 16px 0; font-size: 23px; }
-  .reveal .download-block { padding-top: 15px; border-top: 1px solid var(--dark-rule); }
-  .reveal .download-block p { margin-top: 14px; }
   .treatment-text { margin-top: 30px; max-width: 1052px; }
   .reveal .rule-list { margin: 0; padding-left: 24px; font-size: 23px; }
   .rule-list li { padding-left: 6px; }
@@ -407,17 +404,11 @@
       <div class="frame dark">
         <h2 id="repro-heading">Reproducing the grading</h2>
         <p class="lead">Replaying the saved patches reproduced the pass status and individual test outcomes for all 20 runs.</p>
-        <div class="replay-grid">
-          <ul class="replay-list">
-            <li>Start from the pinned pre-fix commits in the Mathspace repository.</li>
-            <li>Apply each saved patch in a separate copy of its starting snapshot.</li>
-            <li>Run the held-out pytest suite on disposable PostgreSQL 17.</li>
-          </ul>
-          <div class="download-block">
-            <h3>Materials for replay</h3>
-            <p class="small muted">The internal reproduction packet contains the prompts, assignments, patches, grading tests, environment versions, and replay script.</p>
-          </div>
-        </div>
+        <ul class="replay-list">
+          <li>Start from the pinned pre-fix commits in the Mathspace repository.</li>
+          <li>Apply each saved patch in a separate copy of its starting snapshot.</li>
+          <li>Run the held-out pytest suite on disposable PostgreSQL 17.</li>
+        </ul>
         <p class="small muted foot">Patch replay requires access to the Mathspace repository and the internal reproduction packet.</p>
       </div>
       <aside class="notes">
